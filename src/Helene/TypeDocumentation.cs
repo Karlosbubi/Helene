@@ -672,7 +672,7 @@ internal class TypeDocumentation
         return false;
     }
 
-    private MarkdownInlineElement? GetLinkFromReference(string? crefAttribute, string? text = null)
+    private MarkdownInlineElement? GetLinkFromReference(string? crefAttribute, string? text = null, string originPath = "")
     {
         if (this.TryGetMemberInfoFromReference(crefAttribute, out MemberInfo? memberInfo))
         {
@@ -681,7 +681,8 @@ internal class TypeDocumentation
                 this.options.Structure,
                 text: text,
                 noExtension: this.options.GitHubPages || this.options.GitlabWiki || this.options.MkDocs,
-                noPrefix: this.options.GitlabWiki || this.options.MkDocs);
+                noPrefix: this.options.GitlabWiki || this.options.MkDocs,
+                relativeTo : this.options.MkDocs ? originPath : "");
         }
 
         return new MarkdownText(text ?? crefAttribute);

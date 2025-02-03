@@ -157,19 +157,19 @@ internal static class MemberInfoExtensions
         return Uri.UnescapeDataString(relativeUri.ToString().Replace('/', Path.DirectorySeparatorChar));
     }
 
-    internal static MarkdownInlineElement GetDocsLink(this MemberInfo memberInfo, Assembly assembly, DocumentationStructure structure, string? text = null, bool noExtension = false, bool noPrefix = false)
+    internal static MarkdownInlineElement GetDocsLink(this MemberInfo memberInfo, Assembly assembly, DocumentationStructure structure, string? text = null, bool noExtension = false, bool noPrefix = false, string relativeTo = "")
     {
         ArgumentNullException.ThrowIfNull(memberInfo);
         ArgumentNullException.ThrowIfNull(assembly);
 
         return memberInfo switch
         {
-            Type type => type.GetDocsLink(assembly, structure, text, noExtension, noPrefix),
-            MethodBase method => method.GetDocsLink(assembly, structure, text, noExtension, noPrefix),
+            Type type => type.GetDocsLink(assembly, structure, text, noExtension, noPrefix, relativeTo),
+            MethodBase method => method.GetDocsLink(assembly, structure, text, noExtension, noPrefix, relativeTo),
             _ => getDocsLinkBase(memberInfo, assembly, structure, text, noExtension, noPrefix),
         };
 
-        static MarkdownInlineElement getDocsLinkBase(MemberInfo memberInfo, Assembly assembly, DocumentationStructure structure, string? text = null, bool noExtension = false, bool noPrefix = false)
+        static MarkdownInlineElement getDocsLinkBase(MemberInfo memberInfo, Assembly assembly, DocumentationStructure structure, string? text = null, bool noExtension = false, bool noPrefix = false, string relativeTo = "")
         {
             Type? declaringType = memberInfo.DeclaringType;
 
@@ -186,7 +186,7 @@ internal static class MemberInfoExtensions
                 }
                 else if (declaringType.Assembly == assembly)
                 {
-                    return new MarkdownLink(text, memberInfo.GetInternalDocsUrl(structure, noExtension, noPrefix));
+                    return new MarkdownLink(text, memberInfo.GetInternalDocsUrl(structure, noExtension, noPrefix, relativeTo));
                 }
 
                 return new MarkdownText(text);
