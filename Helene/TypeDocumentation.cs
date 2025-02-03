@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Markdown;
+using Microsoft.Extensions.Logging;
 using XMLDoc2Markdown.Utils;
 
 namespace XMLDoc2Markdown;
@@ -11,17 +12,21 @@ internal class TypeDocumentation
 {
     private const string BackingFieldName = ">k__BackingField";
 
+    private readonly ILogger _logger;
     private readonly Assembly assembly;
     private readonly Type type;
     private readonly XmlDocumentation documentation;
     private readonly TypeDocumentationOptions options;
     private readonly MarkdownDocument document = new();
 
-    internal TypeDocumentation(Assembly assembly, Type type, XmlDocumentation documentation, TypeDocumentationOptions? options = null)
+
+    internal TypeDocumentation(Assembly assembly, Type type, XmlDocumentation documentation, ILogger logger,  TypeDocumentationOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(assembly);
         ArgumentNullException.ThrowIfNull(type);
         ArgumentNullException.ThrowIfNull(documentation);
+
+        this._logger = logger;
 
         this.assembly = assembly;
         this.type = type;
@@ -47,7 +52,7 @@ internal class TypeDocumentation
 
         if (typeDocElement != null)
         {
-            Logger.Info("    (documented)");
+            this._logger.LogInformation("    (documented)");
         }
 
         this.WriteObsolete();
@@ -78,7 +83,7 @@ internal class TypeDocumentation
         bool example = this.WriteExample(this.type);
         if (example)
         {
-            Logger.Info("    (example)");
+            this._logger.LogInformation("    (example)");
         }
 
         if (this.options.BackButton)
@@ -434,7 +439,7 @@ internal class TypeDocumentation
             _ => throw new NotImplementedException()
         };
         this.document.AppendHeader(title, 2);
-        Logger.Info($"    {title}");
+        this._logger.LogInformation($"    {title}");
 
         foreach (MemberInfo member in members)
         {
@@ -488,7 +493,7 @@ internal class TypeDocumentation
                 log += " (example)";
             }
 
-            Logger.Info(log);
+            this._logger.LogInformation(log);
         }
     }
 
@@ -660,7 +665,7 @@ internal class TypeDocumentation
             }
             catch (IOException e)
             {
-                Logger.Warning(e.Message);
+                this._logger.LogWarning(e.Message);
             }
         }
 

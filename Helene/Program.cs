@@ -2,8 +2,18 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Reflection;
 using Markdown;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using XMLDoc2Markdown;
 using XMLDoc2Markdown.Utils;
+
+Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Debug()
+        .WriteTo.Console()
+        .WriteTo.Debug()
+        .CreateLogger();
+ILoggerFactory loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddSerilog());
+Microsoft.Extensions.Logging.ILogger logger = loggerFactory.CreateLogger("helene");
 
 Argument<string> srcArgument = new(
     name: "src",
@@ -25,6 +35,10 @@ Option<string> examplesPathOption = new(
 Option<bool> gitHubPagesOption = new(
     name: "--github-pages",
     description: "Remove '.md' extension from links for GitHub Pages");
+
+Option<bool> mkDocsOption = new(
+    name: "--mkdocs",
+    description: "Adjust links and output to work well with mkdocs.");
 
 Option<bool> gitlabWikiOption = new(
     name: "--gitlab-wiki",
@@ -53,6 +67,7 @@ RootCommand rootCommand = new(description: "Tool to generate markdown from C# XM
     indexPageNameOption,
     examplesPathOption,
     gitHubPagesOption,
+    mkDocsOption,
     gitlabWikiOption,
     backButtonOption,
     memberAccessibilityLevelOption,
@@ -66,6 +81,18 @@ rootCommand.SetHandler((InvocationContext context) =>
             string src = context.ParseResult.GetValueForArgument(srcArgument);
             string @out = context.ParseResult.GetValueForOption(outputOption) ?? ".";
             string indexPageName = context.ParseResult.GetValueForOption(indexPageNameOption)!;
+
+            bool mkDocsFlag = context.ParseResult.GetValueForOption(mkDocsOption);
+            DocumentationStructure structureOptionValue = context.ParseResult.GetValueForOption(structureOption) switch
+            {
+                "tree" => DocumentationStructure.Tree,
+                _ => DocumentationStructure.Flat,
+            };
+            if (mkDocsFlag)
+            {
+                structureOptionValue = DocumentationStructure.Tree;
+            }
+
             TypeDocumentationOptions options = new()
             {
                 ExamplesDirectory = context.ParseResult.GetValueForOption(examplesPathOption),
@@ -79,12 +106,8 @@ rootCommand.SetHandler((InvocationContext context) =>
                     "protected" => Accessibility.Protected,
                     _ => Accessibility.Public,
                 },
-                Structure = context.ParseResult.GetValueForOption(structureOption) switch
-                {
-                    "tree" => DocumentationStructure.Tree,
-                    _ => DocumentationStructure.Flat,
-                }
-            };
+                Structure = structureOptionValue
+                };
             int succeeded = 0;
             int failed = 0;
 
@@ -93,8 +116,8 @@ rootCommand.SetHandler((InvocationContext context) =>
 
             string? assemblyName = assembly.GetName().Name;
             XmlDocumentation documentation = new(src);
-            Logger.Info($"Generation started: Assembly: {assemblyName}");
-
+            logger.LogInformation($"Generation started: Assembly: {assemblyName}");
+            
             IMarkdownDocument indexPage = new MarkdownDocument().AppendHeader(assemblyName, 1);
 
             IEnumerable<Type> types = assembly.GetTypes()
@@ -107,7 +130,7 @@ rootCommand.SetHandler((InvocationContext context) =>
                 foreach (Type type in namespaceTypes.OrderBy(x => x.Name))
                 {
                     string fileName = type.GetDocsFileName(options.Structure);
-                    Logger.Info($"  {fileName}.md");
+                    logger.LogInformation($"  {fileName}.md");
 
                     indexPage.AppendParagraph(type.GetDocsLink(assembly, options.Structure, noExtension: options.GitHubPages));
 
@@ -123,13 +146,13 @@ rootCommand.SetHandler((InvocationContext context) =>
 
                         File.WriteAllText(
                             filePath,
-                            new TypeDocumentation(assembly, type, documentation, options).ToString()
+                            new TypeDocumentation(assembly, type, documentation, logger, options).ToString()
                         );
                         succeeded++;
                     }
                     catch (Exception exception)
                     {
-                        Logger.Error(exception.Message);
+                        logger.LogError(exception.Message);
                         failed++;
                     }
                 }
@@ -137,12 +160,12 @@ rootCommand.SetHandler((InvocationContext context) =>
 
             File.WriteAllText(Path.Combine(@out, $"{indexPageName}.md"), indexPage.ToString());
 
-            Logger.Info($"Generation: {succeeded} succeeded, {failed} failed");
+            logger.LogInformation($"Generation: {succeeded} succeeded, {failed} failed");
         }
         catch (Exception ex)
         {
-            Logger.Error("Unable to generate documentation:");
-            Logger.Error(ex.Message);
+            logger.LogError("Unable to generate documentation:");
+            logger.LogError(ex.Message);
             context.ExitCode = 1;
         }
     });
