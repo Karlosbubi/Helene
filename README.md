@@ -1,7 +1,7 @@
 # [Helene](https://science.nasa.gov/saturn/moons/helene/)
 
-Tool to generate markdown from C# XML documentation.
-Fork of [xmldoc2md](https://github.com/charlesdevandiere/xmldoc2md) by Charles de Vandière
+Tool to generate markdown from C# XML documentation.  
+Fork of [xmldoc2md](https://github.com/charlesdevandiere/xmldoc2md) and [MarkdownBuilder](https://github.com/charlesdevandiere/markdown-builder-dotnet) by Charles de Vandière
 
 ## How to use
 
