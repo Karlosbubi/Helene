@@ -1,18 +1,13 @@
-# XMLDoc2Markdown
+# [Helene](https://science.nasa.gov/saturn/moons/helene/)
 
 Tool to generate markdown from C# XML documentation.
-
-[![Build Status](https://dev.azure.com/charlesdevandiere/charlesdevandiere/_apis/build/status/charlesdevandiere.xmldoc2md?branchName=master)](https://dev.azure.com/charlesdevandiere/charlesdevandiere/_build/latest?definitionId=2&branchName=master)
-[![Nuget](https://img.shields.io/nuget/v/XMLDoc2Markdown.svg?color=blue&logo=nuget)](https://www.nuget.org/packages/XMLDoc2Markdown)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=charlesdevandiere_xmldoc2md&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=charlesdevandiere_xmldoc2md)
+Fork of [xmldoc2md](https://github.com/charlesdevandiere/xmldoc2md) by Charles de Vandière
 
 ## How to use
 
 ### Install tool
 
-```shell
-dotnet tool install -g XMLDoc2Markdown
-```
+Not yet setup for this Fork
 
 ### Generate documentation
 
@@ -43,4 +38,4 @@ dotnet xmldoc2md <src> [options]
 dotnet xmldoc2md Sample.dll --output docs --github-pages --back-button
 ```
 
-See complete documentation [here](https://charlesdevandiere.github.io/xmldoc2md/).
+
