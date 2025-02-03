@@ -9,5 +9,6 @@ internal class TypeDocumentationOptions
     internal string? ExamplesDirectory { get; set; }
     internal bool GitHubPages { get; set; }
     internal bool GitlabWiki { get; set; }
+    internal bool MkDocs { get; set; }
     internal DocumentationStructure Structure { get; set; }
 }

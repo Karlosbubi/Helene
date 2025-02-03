@@ -680,8 +680,8 @@ internal class TypeDocumentation
                 this.assembly,
                 this.options.Structure,
                 text: text,
-                noExtension: this.options.GitHubPages || this.options.GitlabWiki,
-                noPrefix: this.options.GitlabWiki);
+                noExtension: this.options.GitHubPages || this.options.GitlabWiki || this.options.MkDocs,
+                noPrefix: this.options.GitlabWiki || this.options.MkDocs);
         }
 
         return new MarkdownText(text ?? crefAttribute);

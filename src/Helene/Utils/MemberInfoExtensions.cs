@@ -110,13 +110,18 @@ internal static class MemberInfoExtensions
         return $"{msdocsBaseUrl}/{type.GetDocsFileName(DocumentationStructure.Flat)}.{memberInfo.Name.ToLower()}";
     }
 
-    internal static string GetInternalDocsUrl(this MemberInfo memberInfo, DocumentationStructure structure, bool noExtension = false, bool noPrefix = false)
+    internal static string GetInternalDocsUrl(this MemberInfo memberInfo, DocumentationStructure structure, bool noExtension = false, bool noPrefix = false, string relativeTo = "")
     {
         ArgumentNullException.ThrowIfNull(memberInfo);
 
         Type type = memberInfo.DeclaringType ?? throw new Exception($"Event {memberInfo.Name} has no declaring type.");
 
         string url = $"{type.GetDocsFileName(structure)}";
+
+        if (!String.IsNullOrEmpty(relativeTo))
+        {
+            url = GetRelativePath(relativeTo, url);
+        }
 
         if (!noExtension)
         {
@@ -131,6 +136,25 @@ internal static class MemberInfoExtensions
         string anchor = memberInfo.Name.ToAnchorLink();
 
         return $"{url}#{anchor}";
+    }
+
+    internal static string GetRelativePath(string from, string to)
+    {
+        // Determine the directory separator based on the OS
+        char directorySeparator = Path.DirectorySeparatorChar;
+
+        // Ensure the fromPath ends with the directory separator
+        if (!from.EndsWith(directorySeparator.ToString()))
+        {
+            from += directorySeparator;
+        }
+
+        Uri fromUri = new Uri(from + Path.DirectorySeparatorChar);
+        Uri toUri = new Uri(to);
+
+        // Get the relative path
+        Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+        return Uri.UnescapeDataString(relativeUri.ToString().Replace('/', Path.DirectorySeparatorChar));
     }
 
     internal static MarkdownInlineElement GetDocsLink(this MemberInfo memberInfo, Assembly assembly, DocumentationStructure structure, string? text = null, bool noExtension = false, bool noPrefix = false)
