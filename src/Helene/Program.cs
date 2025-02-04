@@ -99,6 +99,7 @@ rootCommand.SetHandler((InvocationContext context) =>
                 GitHubPages = context.ParseResult.GetValueForOption(gitHubPagesOption),
                 GitlabWiki = context.ParseResult.GetValueForOption(gitlabWikiOption),
                 BackButton = context.ParseResult.GetValueForOption(backButtonOption),
+                MkDocs = mkDocsFlag,
                 MemberAccessibilityLevel = context.ParseResult.GetValueForOption(memberAccessibilityLevelOption) switch
                 {
                     "private" => Accessibility.Private,
@@ -146,7 +147,7 @@ rootCommand.SetHandler((InvocationContext context) =>
 
                         File.WriteAllText(
                             filePath,
-                            new TypeDocumentation(assembly, type, documentation, logger, options).ToString()
+                            new TypeDocumentation(assembly, type, documentation, logger, options, filePath).ToString()
                         );
                         succeeded++;
                     }

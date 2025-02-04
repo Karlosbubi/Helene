@@ -50,7 +50,7 @@ public string MyProperty { get; protected set; }
 #### Property Value
 
 [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<br>
-The property value. Used by [MyClass.DoGeneric&lt;T&gt;(T)](./myclasslib.myclass#dogenerictt).
+The property value. Used by [MyClass.DoGeneric](./myclasslib.myclass#dogeneric).
 
 #### Example
 
@@ -116,7 +116,7 @@ The enum value
 
 ### **MyClass()**
 
-Initializes a new instance of the [MyClass](./myclasslib.myclass) class.
+Initializes a new instance of the  class.
 
 ```csharp
 public MyClass()
@@ -124,7 +124,7 @@ public MyClass()
 
 **Remarks:**
 
-See also [MyClass.MyClass(String, Int32)](./myclasslib.myclass#myclassstring-int32).
+See also [MyClass..ctor](./myclasslib.myclass#.ctor).
 
 ```csharp
 if (true)
@@ -139,7 +139,7 @@ if (true)
 
 ### **MyClass(String, Int32)**
 
-Initializes a new instance of the [MyClass](./myclasslib.myclass) class.<br>
+Initializes a new instance of the  class.<br>
  Use `firstParam` and `secondParam`.
 
 ```csharp
@@ -156,7 +156,7 @@ The second param.
 
 ### **MyClass(Int32)**
 
-Initializes a new instance of the [MyClass](./myclasslib.myclass) class.
+Initializes a new instance of the  class.
 
 ```csharp
 protected MyClass(int int)
@@ -186,7 +186,7 @@ The second param.
 
 #### Exceptions
 
-[Exception](https://docs.microsoft.com/en-us/dotnet/api/system.exception)<br>
+Exception<br>
 Thrown when...
 
 ### **DoGeneric&lt;T&gt;(T)**
@@ -200,22 +200,22 @@ public int DoGeneric<T>(T value)
 #### Type Parameters
 
 `T`<br>
-The type argument. Used by [MyClass.DoGeneric&lt;T&gt;(T)](./myclasslib.myclass#dogenerictt).
+The type argument. Used by [MyClass.DoGeneric](./myclasslib.myclass#dogeneric).
 
 #### Parameters
 
 `value` T<br>
-The param. Used by [MyClass.DoGeneric&lt;T&gt;(T)](./myclasslib.myclass#dogenerictt).
+The param. Used by [MyClass.DoGeneric](./myclasslib.myclass#dogeneric).
 
 #### Returns
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)<br>
-Returns a value [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32).
+Returns a value .
 
 #### Exceptions
 
-[ArgumentException](https://docs.microsoft.com/en-us/dotnet/api/system.argumentexception)<br>
-Thrown instead of [Exception](https://docs.microsoft.com/en-us/dotnet/api/system.exception).
+ArgumentException<br>
+Thrown instead of .
 
 ### **Get(List&lt;String&gt;)**
 
@@ -237,7 +237,7 @@ An empty string.
 
 #### Exceptions
 
-[Exception](https://docs.microsoft.com/en-us/dotnet/api/system.exception)<br>
+Exception<br>
 Thrown when...
 
 #### Example
@@ -274,7 +274,7 @@ The second param.
 
 #### Exceptions
 
-[Exception](https://docs.microsoft.com/en-us/dotnet/api/system.exception)<br>
+Exception<br>
 Thrown when...
 
 ### **ProtectedDoGeneric&lt;T&gt;(T)**
@@ -298,12 +298,12 @@ The param. Used by .
 #### Returns
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)<br>
-Returns a value [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32).
+Returns a value .
 
 #### Exceptions
 
-[ArgumentException](https://docs.microsoft.com/en-us/dotnet/api/system.argumentexception)<br>
-Thrown instead of [Exception](https://docs.microsoft.com/en-us/dotnet/api/system.exception).
+ArgumentException<br>
+Thrown instead of .
 
 ### **ProtectedGet(List&lt;String&gt;)**
 
@@ -325,7 +325,7 @@ An empty string.
 
 #### Exceptions
 
-[Exception](https://docs.microsoft.com/en-us/dotnet/api/system.exception)<br>
+Exception<br>
 Thrown when...
 
 ### **ProtectedStaticMethod()**

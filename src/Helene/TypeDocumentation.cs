@@ -18,9 +18,10 @@ internal class TypeDocumentation
     private readonly XmlDocumentation documentation;
     private readonly TypeDocumentationOptions options;
     private readonly MarkdownDocument document = new();
+    private readonly string filePath;
 
 
-    internal TypeDocumentation(Assembly assembly, Type type, XmlDocumentation documentation, ILogger logger,  TypeDocumentationOptions? options = null)
+    internal TypeDocumentation(Assembly assembly, Type type, XmlDocumentation documentation, ILogger logger, TypeDocumentationOptions? options = null, string? filePath = null)
     {
         ArgumentNullException.ThrowIfNull(assembly);
         ArgumentNullException.ThrowIfNull(type);
@@ -32,6 +33,7 @@ internal class TypeDocumentation
         this.type = type;
         this.documentation = documentation;
         this.options = options ?? new();
+        this.filePath = filePath?.Replace(".md", "") ?? "";
     }
 
     public override string ToString()
@@ -221,6 +223,7 @@ internal class TypeDocumentation
 
     private object? XElementToMarkdown(XElement element)
     {
+
         return element.Name.ToString() switch
         {
             "see" => this.GetLinkFromReference(element.Attribute("cref")?.Value ?? element.Attribute("href")?.Value, element.Value),
@@ -672,7 +675,7 @@ internal class TypeDocumentation
         return false;
     }
 
-    private MarkdownInlineElement? GetLinkFromReference(string? crefAttribute, string? text = null, string originPath = "")
+    private MarkdownInlineElement? GetLinkFromReference(string? crefAttribute, string? text = null)
     {
         if (this.TryGetMemberInfoFromReference(crefAttribute, out MemberInfo? memberInfo))
         {
@@ -682,7 +685,7 @@ internal class TypeDocumentation
                 text: text,
                 noExtension: this.options.GitHubPages || this.options.GitlabWiki || this.options.MkDocs,
                 noPrefix: this.options.GitlabWiki || this.options.MkDocs,
-                relativeTo : this.options.MkDocs ? originPath : "");
+                relativeTo : this.options.MkDocs ? this.filePath : "");
         }
 
         return new MarkdownText(text ?? crefAttribute);

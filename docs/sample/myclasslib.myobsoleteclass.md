@@ -109,7 +109,7 @@ This member is obsolete.
 
 ---
 
-Initializes a new instance of the [MyClass](./myclasslib.myclass) class.
+Initializes a new instance of the  class.
 
 ```csharp
 public MyObsoleteClass()
@@ -117,7 +117,7 @@ public MyObsoleteClass()
 
 **Remarks:**
 
-See also [MyClass.MyClass(String, Int32)](./myclasslib.myclass#myclassstring-int32).
+See also [MyClass..ctor](./myclasslib.myclass#.ctor).
 
 ```csharp
 if (true)
@@ -155,7 +155,7 @@ An empty string.
 
 #### Exceptions
 
-[Exception](https://docs.microsoft.com/en-us/dotnet/api/system.exception)<br>
+Exception<br>
 Thrown when...
 
 ### **StaticMethod()**

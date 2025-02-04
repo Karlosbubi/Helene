@@ -23,7 +23,7 @@ Inheritance [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) 
 
 ### **GenericClass()**
 
-Initializes a new instance of the [GenericClass&lt;T&gt;](./myclasslib.subnamespace.genericclass-1) class.
+Initializes a new instance of the  class.
 
 ```csharp
 public GenericClass()
@@ -31,7 +31,7 @@ public GenericClass()
 
 ### **GenericClass(T)**
 
-Initializes a new instance of the [GenericClass&lt;T&gt;](./myclasslib.subnamespace.genericclass-1) class.
+Initializes a new instance of the  class.
 
 ```csharp
 public GenericClass(T param)
