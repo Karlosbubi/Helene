@@ -33,7 +33,9 @@ internal class TypeDocumentation
         this.type = type;
         this.documentation = documentation;
         this.options = options ?? new();
-        this.filePath = filePath?.Replace(".md", "") ?? "";
+        this.filePath = filePath ?? "";
+
+        this._logger.LogWarning(filePath);
     }
 
     public override string ToString()

@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Helene.Utils;
 using Markdown;
 
 namespace XMLDoc2Markdown.Utils;
@@ -118,9 +119,11 @@ internal static class MemberInfoExtensions
 
         string url = $"{type.GetDocsFileName(structure)}";
 
+        Console.WriteLine( $"InternalDocsUrl RelativeTo : \"{relativeTo}\"" );
+
         if (!String.IsNullOrEmpty(relativeTo))
         {
-            url = GetRelativePath(relativeTo, url);
+            url = PathHelpers.GetRelativePath(relativeTo, url);
         }
 
         if (!noExtension)
@@ -138,24 +141,7 @@ internal static class MemberInfoExtensions
         return $"{url}#{anchor}";
     }
 
-    internal static string GetRelativePath(string from, string to)
-    {
-        // Determine the directory separator based on the OS
-        char directorySeparator = Path.DirectorySeparatorChar;
 
-        // Ensure the fromPath ends with the directory separator
-        if (!from.EndsWith(directorySeparator.ToString()))
-        {
-            from += directorySeparator;
-        }
-
-        Uri fromUri = new Uri(from + Path.DirectorySeparatorChar);
-        Uri toUri = new Uri(to);
-
-        // Get the relative path
-        Uri relativeUri = fromUri.MakeRelativeUri(toUri);
-        return Uri.UnescapeDataString(relativeUri.ToString().Replace('/', Path.DirectorySeparatorChar));
-    }
 
     internal static MarkdownInlineElement GetDocsLink(this MemberInfo memberInfo, Assembly assembly, DocumentationStructure structure, string? text = null, bool noExtension = false, bool noPrefix = false, string relativeTo = "")
     {

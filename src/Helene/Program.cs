@@ -147,7 +147,7 @@ rootCommand.SetHandler((InvocationContext context) =>
 
                         File.WriteAllText(
                             filePath,
-                            new TypeDocumentation(assembly, type, documentation, logger, options, filePath).ToString()
+                            new TypeDocumentation(assembly, type, documentation, logger, options, fileName).ToString()
                         );
                         succeeded++;
                     }
